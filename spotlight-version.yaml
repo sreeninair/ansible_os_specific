@@ -1,0 +1,18 @@
+---
+ - name: run if redhat
+   hosts: server
+   remote_user: root
+   tasks:
+   - yum: name=rsync state=present
+   - synchronize: src=$PWD/scripts/ dest=/root/scripts/  
+   - shell: /bin/sh /root/scripts/reshat.sh
+     when: ansible_os_family == "RedHat"
+   
+ - name: run if ubuntu
+   hosts: server
+   remote_user: root
+   tasks:
+   - apt: name=rsync state=present
+   - shell: /bin/sh /root/scripts/ubuntu.sh
+     when: ansible_os_family == "Debian"
+
